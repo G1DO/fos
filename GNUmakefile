@@ -93,3 +93,6 @@ $(OBJDIR)/.deps: $(foreach dir, $(OBJDIRS), $(wildcard $(OBJDIR)/$(dir)/*.d))
 
 
 .PHONY: all clean qemu
+.PHONY: run debug
+run: qemu
+debug: qemu-gdb
