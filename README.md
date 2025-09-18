@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # FOSv2
 
 [FOS][fos-v1] is an educational OS for Ain Shams University Operating Systems Course CSW355, forked and refactored from [MIT Operating Systems Lab 6.828][mit-6.828]. It was created by [Dr. Mahmoud Hossam][dr-m-h] and currently maintained by [Dr. Ahmed Salah][dr-a-s].  
@@ -155,3 +156,6 @@ FOSv2 has changed [`kern/Makefrag`][kern-makefrag] in [`8e2612dc`][8e2612dc-diff
 [project]: https://github.com/YoussefRaafatNasry/fos-v2/projects/1/
 [compare]: https://github.com/YoussefRaafatNasry/fos-v2/compare/
 [new-issue]: https://github.com/YoussefRaafatNasry/fos-v2/issues/new/
+=======
+# fos
+>>>>>>> 7abdd2ad862fc8bff6f5bfc08bd0cff08d2537bc
