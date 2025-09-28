@@ -5,15 +5,24 @@
 
 extern void _main(int argc, char **argv);
 
-volatile struct Env *env;
-char *binaryname = "(PROGRAM NAME UNKNOWN)";
+volatile struct Env *myEnv = NULL;
+volatile bool printStats = 1;
 
+volatile char *binaryname = "(PROGRAM NAME UNKNOWN)";
 void
 libmain(int argc, char **argv)
 {
+	//printStats = 1;
+	int envIndex = sys_getenvindex();
+
+	myEnv = &(envs[envIndex]);
+
+	//SET THE PROGRAM NAME
+	if (myEnv->prog_name[0] != '\0')
+		binaryname = myEnv->prog_name;
+
 	// set env to point at our env structure in envs[].
-	// LAB 3: Your code here.
-	env = envs;
+	// env = envs;
 
 	// save the name of the program so that panic() can use it
 	if (argc > 0)
@@ -22,8 +31,21 @@ libmain(int argc, char **argv)
 	// call user main routine
 	_main(argc, argv);
 
+	if (printStats)
+	{
+		sys_lock_cons();
+		{
+			cprintf("**************************************\n");
+			cprintf("Num of PAGE faults = %d, modif = %d\n", myEnv->pageFaultsCounter, myEnv->nModifiedPages);
+			cprintf("# PAGE IN (from disk) = %d, # PAGE OUT (on disk) = %d, # NEW PAGE ADDED (on disk) = %d\n", myEnv->nPageIn, myEnv->nPageOut,myEnv->nNewPageAdded);
+			//cprintf("Num of freeing scarce memory = %d, freeing full working set = %d\n", myEnv->freeingScarceMemCounter, myEnv->freeingFullWSCounter);
+			cprintf("Num of clocks = %d\n", myEnv->nClocks);
+			cprintf("**************************************\n");
+		}
+		sys_unlock_cons();
+	}
+
 	// exit gracefully
-	//exit();
-	sleep();
+	exit();
 }
 

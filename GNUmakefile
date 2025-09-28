@@ -12,7 +12,7 @@ OBJDIR 		:= obj
 TOOLPREFIX 	:= i386-elf-
 QEMU 		:= qemu-system-i386
 PERL		:= perl
-IMAGE 		:= $(OBJDIR)/fos.img
+IMAGE 		:= $(OBJDIR)/kern/bochs.img
 
 CC			:= $(TOOLPREFIX)gcc -m32 -pipe
 GCC_LIB 	:= $(shell $(CC) -print-libgcc-file-name)
@@ -22,6 +22,7 @@ LD			:= $(TOOLPREFIX)ld -m elf_i386
 OBJCOPY		:= $(TOOLPREFIX)objcopy
 OBJDUMP		:= $(TOOLPREFIX)objdump
 NM			:= $(TOOLPREFIX)nm
+
 
 
 # Compiler flags

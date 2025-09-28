@@ -1,6 +1,7 @@
 // Basic string routines.  Not hardware optimized, but not shabby.
 
 #include <inc/string.h>
+#include <inc/assert.h>
 
 int
 strlen(const char *s)
@@ -104,16 +105,36 @@ strfind(const char *s, char c)
 }
 
 
+// *************** The faster implementation of memset & memcpy is implemented by *************
+// ****************** Team80 (Yahia Khaled, Malek Ahmed et al) - FCIS'24-25 *******************
 void *
 memset(void *v, int c, uint32 n)
 {
-	char *p;
-	int m;
+//	char *p;
+//	int m;
+//
+//	p = v;
+//	m = n;
+//	while (--m >= 0)
+//		*p++ = c;
 
-	p = v;
-	m = n;
-	while (--m >= 0)
-		*p++ = c;
+	/*Faster Implementation*/
+	uint64* p64 = (uint64*)v;
+	if(n >= 8){
+		uint64 data_block = c;
+		data_block |= data_block << 8;
+		data_block |= data_block << 16;
+		data_block |= data_block << 32;
+
+		while(n >= 8)
+			*p64++ = data_block, n -= 8;
+	}
+
+	if(n){
+		uint8* p8 = (uint8*)p64;
+		while (n-- > 0)
+			*p8++ = (uint8)c;
+	}
 
 	return v;
 }
@@ -121,14 +142,31 @@ memset(void *v, int c, uint32 n)
 void *
 memcpy(void *dst, const void *src, uint32 n)
 {
-	const char *s;
-	char *d;
+	//	const char *s;
+	//	char *d;
+	//
+	//	s = src;
+	//	d = dst;
+	//	while (n-- > 0)
+	//		*d++ = *s++;
+	/*Faster Implementation*/
+	uint64* s64 = (uint64*)src;
+	uint64* d64 = (uint64*)dst;
+	if(n >= 8){
+		while(n >= 8){
+			*d64 = *s64;
+			n -= 8;
+			++s64;
+			++d64;
+		}
+	}
 
-	s = src;
-	d = dst;
-	while (n-- > 0)
-		*d++ = *s++;
-
+	if(n){
+		uint8* s8 = (uint8*)s64;
+		uint8* d8 = (uint8*)d64;
+		while (n-- > 0)
+			*d8++ = *s8++;
+	}
 	return dst;
 }
 
@@ -137,7 +175,7 @@ memmove(void *dst, const void *src, uint32 n)
 {
 	const char *s;
 	char *d;
-	
+
 	s = src;
 	d = dst;
 	if (s < d && s + n > d) {
@@ -224,27 +262,84 @@ strtol(const char *s, char **endptr, int base)
 	return (neg ? -val : val);
 }
 
+void
+ltostr(long value, char *str)
+{
+	int neg = 0;
+	int s = 0 ;
+
+	// plus/minus sign
+	if (value < 0)
+	{
+		neg = 1;
+		str[0] = '-';
+		value = value * -1 ;
+		s++ ;
+	}
+	do
+	{
+		int mod = value % 10 ;
+		str[s++] = mod + '0' ;
+		value = value / 10 ;
+	/*2023 FIX el7 :)*/
+	//} while (value % 10 != 0);
+	} while (value != 0);
+
+	//reverse the string
+	int start = 0 ;
+	int end = s-1 ;
+	if (neg)
+		start = 1 ;
+	while(start<end)
+	{
+		char tmp = str[start] ;
+		str[start] = str[end] ;
+		str[end] = tmp;
+		start++ ;
+		end-- ;
+	}
+
+	str[s] = 0 ;
+	// we don't properly detect overflow!
+
+}
+
+void
+strcconcat(const char *str1, const char *str2, char *final)
+{
+	int len1 = strlen(str1);
+	int len2 = strlen(str2);
+	int s = 0 ;
+	for (s=0 ; s < len1 ; s++)
+		final[s] = str1[s] ;
+
+	int i = 0 ;
+	for (i=0 ; i < len2 ; i++)
+		final[s++] = str2[i] ;
+
+	final[s] = 0;
+}
 int strsplit(char *string, char *SPLIT_CHARS, char **argv, int * argc)
 {
 	// Parse the command string into splitchars-separated arguments
 	*argc = 0;
 	(argv)[*argc] = 0;
-	while (1) 
+	while (1)
 	{
 		// trim splitchars
 		while (*string && strchr(SPLIT_CHARS, *string))
 			*string++ = 0;
-		
+
 		//if the command string is finished, then break the loop
 		if (*string == 0)
 			break;
 
 		//check current number of arguments
-		if (*argc == MAX_ARGUMENTS-1) 
+		if (*argc == MAX_ARGUMENTS-1)
 		{
 			return 0;
 		}
-		
+
 		// save the previous argument and scan past next arg
 		(argv)[(*argc)++] = string;
 		while (*string && !strchr(SPLIT_CHARS, *string))
@@ -252,4 +347,11 @@ int strsplit(char *string, char *SPLIT_CHARS, char **argv, int * argc)
 	}
 	(argv)[*argc] = 0;
 	return 1 ;
+}
+
+
+char* str2lower(char *dst, const char *src)
+{
+	panic("str2lower is not implemented yet!");
+	return NULL;
 }
