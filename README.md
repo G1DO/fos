@@ -1,4 +1,4 @@
-# FOSv2 — ASU OS 2025/26
+# FOS — ASU OS 2025/26
 
 [FOS][fos-v1] is an educational OS for Ain Shams University Operating Systems Course CSW355, forked and refactored from [MIT Operating Systems Lab 6.828][mit-6.828]. It was created by [Dr. Mahmoud Hossam][dr-m-h] and is currently maintained by course staff.
 **FOSv2 (2025/26 Edition)** updates the layout and build flow used this year and ships modern editor/debugger integration.
