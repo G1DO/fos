@@ -12,5 +12,6 @@ void run_command_prompt();
 // Declaration of functions that implement command prompt commands.
 int command_help(int , char **);
 int command_kernel_info(int , char **);
+int command_fac(int ,char **);
 
 #endif	// !FOS_KERN_MONITOR_H

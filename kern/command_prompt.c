@@ -87,6 +87,7 @@ struct Command commands[] =
 		{ "wum", "writes one byte to specific location" ,command_writemem},
 		{ "rum", "reads one byte from specific location" ,command_readmem},
 		{ "meminfo", "Display number of free frames", command_meminfo},
+		{"fac" , "asdasdasd",command_fac},
 
 		//TODO: LAB2 Hands-on: add the commands here
 
@@ -184,6 +185,21 @@ int execute_command(char *command_string)
 }
 
 /***** Implementations of basic kernel command prompt commands *****/
+
+//hands-on
+int command_fac(int number_of_arguments, char **arguments){
+	if (number_of_arguments != 2){
+		return -1;
+	}
+	int number = strtol(arguments[1],NULL,10);
+	int sum = 1;
+	int i = number;
+	for (i ; i > 0 ; i--){
+		sum = sum * i;
+	}
+	cprintf("factoral %d = %d ",number ,sum);
+	return 0;
+}
 
 //print name and description of each command
 int command_help(int number_of_arguments, char **arguments)
