@@ -47,7 +47,7 @@ FOS requires a Linux-like environment. On Windows, you can now use the **automat
 
 #### Step 1: Download the setup script
 
-➡️ **[Download setup_fos_windows.ps1](https://raw.githubusercontent.com/G1DO/fos/main/scripts/windows/setup_fos_windows.ps1)**
+➡️ **[Download setup_fos_windows.ps1](https://raw.githubusercontent.com/G1DO/fos/main/windows/setup_fos_windows.ps1)**
 
 This PowerShell script automatically installs and configures:
 
