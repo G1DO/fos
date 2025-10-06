@@ -12,9 +12,10 @@
 * [1. What's Different?](#1-whats-different)
 * [2. Set up Environment](#2-set-up-environment)
 
-  * [2.1. Windows - Cygwin](#21-windows---cygwin)
-  * [2.2. Windows - WSL (Recommended)](#22-windows---wsl-recommended)
-  * [2.3. Linux](#23-linux)
+  * [2.1. Windows - Automatic Setup (Recommended)](#21-windows---automatic-setup-recommended)
+  * [2.2. Windows - Cygwin (Deprecated)](#22-windows---cygwin-deprecated)
+  * [2.3. Windows - WSL (Alternative)](#23-windows---wsl-alternative)
+  * [2.4. Linux](#24-linux)
 * [3. Setup Workspace](#3-setup-workspace)
 * [4. Debugging](#4-debugging)
 * [5. Contribute](#5-contribute)
@@ -31,102 +32,144 @@
 6. **Open source** — Contributions and fixes welcome.
 7. **New targets** — `make run` (QEMU) and `make debug` (QEMU+GDB on port `26000`) for this 25/26 edition.
 
-![screenshot](https://user-images.githubusercontent.com/41103290/75132023-0e3f9d80-56de-11ea-9daf-e578bdcdd750.png)
+---
 
 ## 2. Set up Environment
 
-FOS requires a Linux environment. On Windows, use **WSL (recommended)** or **Cygwin**. Linux users follow the steps [below](#23-linux).
+FOS requires a Linux-like environment. On Windows, you can now use the **automatic setup script** (recommended), or WSL.
+**Cygwin is deprecated** — it no longer works reliably with the latest FOSv2 toolchain and QEMU versions.
 
-### 2.1. Windows - Cygwin
+---
 
-1. **Linux-like Environment:**
+### 2.1. Windows - Automatic Setup (Recommended)
 
-   * [Download][dl-cygwin-32] and install [**Cygwin**][cygwin] ***32-bit***.
-   * Copy **`setup-x86.exe`** to **`C:\cygwin`**.
-   * Open a terminal in **`C:\cygwin`** and run:
+**✅ Simplest method — no WSL, no MSYS2, no manual installs.**
 
-     ```cmd
-     ./setup-x86.exe -q -P gdb,make,perl
-     ```
+#### Step 1: Download the setup script
 
-2. **Toolchain:**
+➡️ **[Download setup_fos_windows.ps1](https://raw.githubusercontent.com/G1DO/fos/main/scripts/windows/setup_fos_windows.ps1)**
 
-   * [Download][dl-toolchain] the `i386-elf-toolchain` for Windows.
-   * Extract **`i386-elf-toolchain-windows.rar`** into **`C:\cygwin\opt\cross\`** *(create the folder if it doesn’t exist)*.
+This PowerShell script automatically installs and configures:
 
-3. **Emulator:**
+* Git for Windows (Git Bash)
+* 7-Zip
+* Scoop (user mode) + `make` and `gdb`
+* QEMU (x64)
+* i386-elf toolchain
+* Updates PATH for both Windows & Git Bash
+* Verifies installation with quick version checks
 
-   * [Download][dl-qemu] and install [**QEMU**][qemu].
-   * During setup, uncheck all system emulations **except `i386`**.
+#### Step 2: Run the script
 
-4. **Update `PATH`:**
-   Add the following to your environment `PATH`:
+Open **PowerShell (normal, not Administrator)** and run:
 
-   ```path
-   C:\Program Files\qemu
-   C:\cygwin\bin
-   C:\cygwin\opt\cross\bin
-   ```
+```powershell
+cd C:\path\to\where\you\downloaded\the\script
+Set-ExecutionPolicy Bypass -Scope Process -Force
+.\setup_fos_windows.ps1
+```
 
-[cygwin]: https://cygwin.com/
-[dl-cygwin-32]: https://cygwin.com/install.html
-[dl-toolchain]: https://github.com/YoussefRaafatNasry/fos-v2/releases/tag/toolchain
-[qemu]: https://www.qemu.org/
-[dl-qemu]: https://qemu.weilnetz.de/w64/2020/
+> Example:
+>
+> ```powershell
+> cd C:\Users\<YourName>\Downloads
+> Set-ExecutionPolicy Bypass -Scope Process -Force
+> .\setup_fos_windows.ps1
+> ```
 
-### 2.2. Windows - WSL (Recommended)
+---
+
+#### Step 3: Build the project (Git Bash)
+
+After the script finishes:
+
+Open **Git Bash** (or VS Code terminal set to Git Bash) and run:
+
+```bash
+# 1) Load PATH from the installer
+source ~/.bashrc
+
+# 2) Sanity checks (these should print paths/versions)
+which i386-elf-gcc
+which qemu-system-i386
+
+# 3) Clone and build the repo
+git clone https://github.com/G1DO/fos.git
+cd fos
+make
+make run
+```
+
+✅ QEMU will start and boot FOS automatically.
+No extra configuration is needed.
+
+---
+
+### 2.2. Windows - Cygwin (Deprecated)
+
+> ⚠️ **Cygwin is outdated and not recommended.**
+> It often fails with the current toolchain and QEMU on modern Windows.
+> Please use the **Automatic Setup** above or **WSL** below instead.
+
+---
+
+### 2.3. Windows - WSL (Alternative)
 
 > Requires Windows 10 build 16215+
 
 The [Windows Subsystem for Linux][wsl] lets you run a GNU/Linux environment (tools, utilities, and apps) directly on Windows with minimal overhead.
 
-1. Control Panel → Programs → Turn Windows Features on or off → enable **Windows Subsystem for Linux**.
-2. Install **Ubuntu** from Microsoft Store.
-3. Launch **Ubuntu**.
-4. Follow the **Linux** steps in the next section (install any missing tools if a command is not found).
+1. Control Panel → Programs → Turn Windows Features on or off → enable **Windows Subsystem for Linux**
+2. Install **Ubuntu** from Microsoft Store
+3. Launch **Ubuntu**
+4. Follow the **Linux** steps below (install any missing tools if a command is not found)
 
 [wsl]: https://docs.microsoft.com/en-us/windows/wsl/about
 
-### 2.3. Linux
+---
+
+### 2.4. Linux
 
 ```bash
 # Required packages
 sudo apt-get update
 sudo apt-get install -y build-essential qemu-system-i386 gdb libfl-dev
 
-# Optional: cross toolchain, if you need i386-elf-* in PATH
+# Optional: cross toolchain
 sudo mkdir -p /opt/cross && cd /opt/cross
 sudo wget https://github.com/YoussefRaafatNasry/fos-v2/releases/download/toolchain/i386-elf-toolchain-linux.tar.bz2
-sudo tar xjf i386-elf-toolchain-linux.tar.bz2
-sudo rm i386-elf-toolchain-linux.tar.bz2
+sudo tar xjf i386-elf-toolchain-linux.tar.bz2 && rm i386-elf-toolchain-linux.tar.bz2
 echo 'export PATH="$PATH:/opt/cross/bin"' >> ~/.bashrc
+source ~/.bashrc
 ```
+
+---
 
 ## 3. Setup Workspace
 
 1. [Download][dl-vscode] and install [**Visual Studio Code**][vscode].
-2. Download or clone this repo and open it in VS Code:
+
+2. Clone this repo and open it in VS Code:
 
    ```bash
    git clone https://github.com/G1DO/fos.git
    cd fos/
    code .
    ```
-3. **Install all** recommended extensions (bottom-right prompt).
-4. Build → <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> or run:
+
+3. Install all recommended extensions (bottom-right prompt).
+
+4. Build with:
 
    ```bash
    make
-   ```
-
-   Then launch:
-
-   ```bash
    make run
    ```
 
 [vscode]: https://code.visualstudio.com/
 [dl-vscode]: https://code.visualstudio.com/
+
+---
 
 ## 4. Debugging
 
@@ -134,7 +177,10 @@ echo 'export PATH="$PATH:/opt/cross/bin"' >> ~/.bashrc
 2. Start Debugging → <kbd>F5</kbd>.
 3. Fix your bugs!
 
+---
+
 ## 5. Contribute
 
 * Submit a PR with proposed changes — contributions are welcome.
-* Open an Issue if something is wrong or unclear.
+* Open an Issue if something is unclear or broken.
+
