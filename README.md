@@ -176,12 +176,3 @@ source ~/.bashrc
 
 * Submit a PR with improvements or bug fixes — contributions are always welcome
 * Open an Issue if something doesn’t work or needs clarification
-
----
-
-✅ **Quick Summary**
-
-* Cygwin → ❌ Deprecated
-* WSL → 🟡 Optional
-* Automatic PowerShell Script → 🟢 Recommended
-* Works seamlessly on Windows 10/11
