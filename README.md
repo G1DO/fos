@@ -47,7 +47,7 @@ On Windows, use the **Automatic Setup Script (Recommended)** or **WSL**.
 
 ### 2.1. Windows - Automatic Setup (Recommended)
 
-**✅ Easiest Method — No WSL, No Cygwin, No Manual Installs**
+> **Note:** Make sure PowerShell is updated to the latest version. After updating, it may be called **PowerShell 7** instead of Windows PowerShell.
 
 This PowerShell script installs and configures everything automatically.
 
