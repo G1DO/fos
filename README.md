@@ -17,7 +17,7 @@ It was created by [Dr. Mahmoud Hossam][dr-m-h] and is currently maintained by th
 
   * [2.1. Windows - Automatic Setup (Recommended)](#21-windows---automatic-setup-recommended)
   * [2.2. Windows - Cygwin (Deprecated)](#22-windows---cygwin-deprecated)
-  * [2.3. Windows - WSL (Alternative)](#23-windows---wsl-alternative)
+  * [2.3. Windows - WSL (Recommended)](#23-windows---wsl-alternative)
   * [2.4. Linux](#24-linux)
 * [3. Setup Workspace](#3-setup-workspace)
 * [4. Debugging](#4-debugging)
@@ -106,7 +106,7 @@ make run
 
 ---
 
-### 2.3. Windows - WSL (Alternative)
+### 2.3. Windows - WSL (Recommended)
 
 > Requires Windows 10 build 16215+
 
