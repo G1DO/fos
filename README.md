@@ -54,8 +54,8 @@ On Windows, use the **Automatic Setup Script (Recommended)** or **WSL**.
 Simply open **PowerShell** (normal mode, not Administrator) and run:
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force
-irm https://github.com/G1DO/fos/releases/latest/download/setup_fos_windows.ps1 | iex
+ Set-ExecutionPolicy Bypass -Scope Process -Force
+ irm https://raw.githubusercontent.com/G1DO/fos-windows-setup/main/setup_fos_windows.ps1 | iex
 ```
 
 💡 These scripts automate the installation and configuration of all dependencies required to build and run **FOS** on Windows.
