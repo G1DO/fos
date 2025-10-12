@@ -49,8 +49,6 @@ On Windows, use the **Automatic Setup Script (Recommended)** or **WSL**.
 
 > **Note:** Make sure PowerShell is updated to the latest version. After updating, it may be called **PowerShell 7** instead of Windows PowerShell.
 
-This PowerShell script installs and configures everything automatically.
-
 #### Step 1: One-Line Install Command
 
 Simply open **PowerShell** (normal mode, not Administrator) and run:
@@ -60,15 +58,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 irm https://github.com/G1DO/fos/releases/latest/download/setup_fos_windows.ps1 | iex
 ```
 
-This script installs and configures:
-
-* Git for Windows (Git Bash)
-* 7-Zip
-* Scoop (user mode) + GNU Make + GDB
-* QEMU (x64)
-* i386-elf toolchain
-* Adds all tools to your PATH (Windows + Git Bash)
-* Performs quick version checks
+💡 These scripts automate the installation and configuration of all dependencies required to build and run **FOS** on Windows.
+For more details or to view the full script, visit [**G1DO/fos-windows-setup**](https://github.com/G1DO/fos-windows-setup).
 
 ---
 
