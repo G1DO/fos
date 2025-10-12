@@ -84,8 +84,6 @@ make
 make run
 ```
 
-✅ **QEMU** will launch and boot FOS automatically — no additional setup required.
-
 ---
 
 ### 2.2. Windows - Cygwin (Deprecated)
