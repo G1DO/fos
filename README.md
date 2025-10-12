@@ -57,7 +57,7 @@ Simply open **PowerShell** (normal mode, not Administrator) and run:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
-irm https://raw.githubusercontent.com/G1DO/fos/main/windows/setup_fos_windows.ps1 | iex
+irm https://github.com/G1DO/fos/releases/latest/download/setup_fos_windows.ps1 | iex
 ```
 
 This script installs and configures:
